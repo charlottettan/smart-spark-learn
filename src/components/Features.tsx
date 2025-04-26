@@ -5,7 +5,10 @@ import {
   BarChart3, 
   RefreshCw, 
   Layers, 
-  Lightbulb
+  Lightbulb,
+  MessageSquare,
+  Home,
+  Users
 } from "lucide-react";
 
 const features = [
@@ -25,14 +28,14 @@ const features = [
     description: "Detailed analytics on student progress, highlighting areas of strength and improvement."
   },
   {
-    icon: <RefreshCw className="h-10 w-10 text-edu-primary" />,
-    title: "Continuous Feedback",
-    description: "Real-time feedback on which topics need additional focus or different approaches."
+    icon: <Users className="h-10 w-10 text-edu-primary" />,
+    title: "Community Learning",
+    description: "Collaborative activities and culturally diverse content foster social skills and inclusivity."
   },
   {
-    icon: <Layers className="h-10 w-10 text-edu-primary" />,
-    title: "Curriculum Integration",
-    description: "Seamlessly integrates with existing curriculum while adapting to updates and changes."
+    icon: <Home className="h-10 w-10 text-edu-primary" />,
+    title: "Family Integration",
+    description: "Multilingual family portal enables parents to actively participate in their child's education."
   },
   {
     icon: <Lightbulb className="h-10 w-10 text-edu-primary" />,
