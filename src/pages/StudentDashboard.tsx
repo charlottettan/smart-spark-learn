@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
@@ -12,8 +11,9 @@ import LearningStats from "@/components/dashboard/LearningStats";
 import CourseCard from "@/components/dashboard/CourseCard";
 import FamilyPortal from "@/components/dashboard/FamilyPortal";
 import { Progress } from "@/components/ui/progress";
+import LanguageSelector from "@/components/dashboard/LanguageSelector";
+import InteractiveGames from "@/components/dashboard/InteractiveGames";
 
-// Custom icon as BrainCircuit isn't available directly from lucide-react
 const BrainCircuit = (props: any) => {
   return (
     <svg
@@ -129,8 +129,43 @@ const learningInsights = [
   },
 ];
 
+const translations = {
+  en: {
+    welcome: "Welcome back, Sarah! Here's your personalized learning journey.",
+    dashboard: "Dashboard",
+    courses: "My Courses",
+    insights: "Learning Insights",
+    family: "Family Portal",
+    startLessons: "Start Today's Lessons",
+    learningPlan: "Your Learning Plan for Today",
+    customizedLessons: "Based on your learning style and progress, we've customized today's lessons."
+  },
+  es: {
+    welcome: "¡Bienvenida de nuevo, Sarah! Aquí está tu viaje de aprendizaje personalizado.",
+    dashboard: "Tablero",
+    courses: "Mis Cursos",
+    insights: "Información de Aprendizaje",
+    family: "Portal Familiar",
+    startLessons: "Comenzar las Lecciones de Hoy",
+    learningPlan: "Tu Plan de Aprendizaje para Hoy",
+    customizedLessons: "Basado en tu estilo de aprendizaje y progres, hemos personalizado las lecciones de hoy."
+  },
+  fr: {
+    welcome: "Bon retour, Sarah! Voici ton parcours d'apprentissage personnalisé.",
+    dashboard: "Tableau de Bord",
+    courses: "Mes Cours",
+    insights: "Analyses d'Apprentissage",
+    family: "Portail Familial",
+    startLessons: "Commencer les Leçons d'Aujourd'hui",
+    learningPlan: "Ton Plan d'Apprentissage pour Aujourd'hui",
+    customizedLessons: "Selon ton style d'apprentissage et tes progrès, nous avons personnalisé les leçons d'aujourd'hui."
+  }
+};
+
 const StudentDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [language, setLanguage] = useState("en");
+  const t = translations[language as keyof typeof translations];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -144,62 +179,59 @@ const StudentDashboard = () => {
                 <ArrowLeft className="h-4 w-4 mr-1" /> Back to Home
               </Link>
               <h1 className="text-3xl md:text-4xl font-bold text-edu-dark">
-                Student Dashboard
+                {t.dashboard}
               </h1>
-              <p className="text-gray-600">Welcome back, Sarah! Here's your personalized learning journey.</p>
+              <p className="text-gray-600">{t.welcome}</p>
             </div>
-            <div className="hidden md:block">
+            <div className="flex gap-4 items-center">
+              <LanguageSelector onLanguageChange={setLanguage} />
               <Button className="bg-edu-primary hover:bg-edu-primary/90">
-                Start Today's Lessons
+                {t.startLessons}
               </Button>
             </div>
           </div>
           
           <Tabs defaultValue="dashboard" className="space-y-8" onValueChange={setActiveTab}>
             <TabsList className="bg-white shadow-sm">
-              <TabsTrigger value="dashboard" className="data-[state=active]:bg-edu-primary data-[state=active]:text-white">
-                Dashboard
-              </TabsTrigger>
-              <TabsTrigger value="courses" className="data-[state=active]:bg-edu-primary data-[state=active]:text-white">
-                My Courses
-              </TabsTrigger>
-              <TabsTrigger value="insights" className="data-[state=active]:bg-edu-primary data-[state=active]:text-white">
-                Learning Insights
-              </TabsTrigger>
-              <TabsTrigger value="family" className="data-[state=active]:bg-edu-primary data-[state=active]:text-white">
-                Family Portal
-              </TabsTrigger>
+              <TabsTrigger value="dashboard">{t.dashboard}</TabsTrigger>
+              <TabsTrigger value="courses">{t.courses}</TabsTrigger>
+              <TabsTrigger value="insights">{t.insights}</TabsTrigger>
+              <TabsTrigger value="family">{t.family}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="dashboard">
-              <Card className="border-0 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-edu-primary to-edu-accent3 h-2" />
-                <CardHeader>
-                  <CardTitle>Your Learning Plan for Today</CardTitle>
-                  <CardDescription>
-                    Based on your learning style and progress, we've customized today's lessons.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="col-span-2">
-                      <h3 className="font-medium text-lg mb-4">Recommended Lessons</h3>
-                      <RecommendedLessons lessons={recommendedLessons} />
+              <div className="grid gap-6">
+                <InteractiveGames language={language} />
+                
+                <Card className="border-0 shadow-sm overflow-hidden">
+                  <div className="bg-gradient-to-r from-edu-primary to-edu-accent3 h-2" />
+                  <CardHeader>
+                    <CardTitle>{t.learningPlan}</CardTitle>
+                    <CardDescription>
+                      {t.customizedLessons}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      <div className="col-span-2">
+                        <h3 className="font-medium text-lg mb-4">Recommended Lessons</h3>
+                        <RecommendedLessons lessons={recommendedLessons} />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-lg mb-4">Learning Stats</h3>
+                        <LearningStats />
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-medium text-lg mb-4">Learning Stats</h3>
-                      <LearningStats />
-                    </div>
+                  </CardContent>
+                </Card>
+                
+                <div>
+                  <h3 className="font-medium text-xl mb-4">{t.courses}</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {currentCourses.slice(0, 4).map((course) => (
+                      <CourseCard key={course.id} course={course} />
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
-              
-              <div className="mt-8">
-                <h3 className="font-medium text-xl mb-4">Your Courses</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {currentCourses.slice(0, 4).map((course) => (
-                    <CourseCard key={course.id} course={course} />
-                  ))}
                 </div>
               </div>
             </TabsContent>
